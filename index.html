@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProTabelka</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="style.css"> 
+</head>
+<body>
+
+    <header>
+        <h1>ProTabelka</h1>
+    </header>
+
+    <table id="tabelka" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Marka samochodu</th>
+            </tr>
+        </thead>
+    <tbody>
+    </tbody>
+    </table>
+
+    <footer>
+        <p>ProTabelka by Marcel Zarębski</p>
+    </footer>
+  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#tabelka').DataTable({
+            "ajax": "get_dane.php",
+            "columns": [
+                {"data": "id"},
+                {"data": "name"},
+                {"data": "surname"},
+                {"data": "car"}
+            ],
+            "order": [[1, 'asc']] 
+            });
+        
+
+            $('#tabelka tbody').on('click', 'tr', function () {
+            var row = table.row($(this));
+            if (row.child.isShown()) {
+                row.child.hide();
+                $(this).removeClass('shown');
+            } else {
+                row.child(format(row.data())).show();
+                $(this).addClass('shown');
+            }
+            });
+        
+            function format(data) {
+            return '<div>'+ 
+                '<p><strong>Model samochodu:</strong> '+data.model_samochodu+'</p>'+
+                '<p><strong>Moc:</strong> '+data.moc+'</p>'+
+                '</div>';
+            }
+        });
+    </script>
+  
+</body>
+</html>
